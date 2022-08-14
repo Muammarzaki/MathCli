@@ -12,7 +12,7 @@ import com.logika.services.logicops.BasicOperation;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(name = "lgc", description = "compare string logic to boolean", version = "1.0")
+@Command(name = "lgc", description = "compare string logic to boolean", version = "1.0", mixinStandardHelpOptions = true)
 public class LogicCaller implements Callable<Integer> {
     @Option(names = { "--v", "-value" }, description = "value to compare string")
     private String statement;
@@ -71,12 +71,12 @@ public class LogicCaller implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         List<String> parse = ParseLogics.parseLogic(statement);
+        System.out.println();
         if ((parse.size() % 2) != 0) {
             System.out.println(iterateStatment(parse));
         } else {
             System.err.println(new Exception("something wrong"));
         }
-
-        return null;
+        return 1;
     }
 }
