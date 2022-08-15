@@ -29,63 +29,70 @@ public class LogicCaller implements Callable<Integer> {
         List<String> operator = new ArrayList<>();
         List<Boolean> set1 = new ArrayList<>();
         List<Boolean> set2 = new ArrayList<>();
-
-        if (parse.size() > 1) {
-            for (int i = 0; i < parse.size(); i++) {
-                if ((i % 2) == 0) {
-                    component.add(spliterators.spliters(parse.get(i)));
-                } else {
-                    operator.add(parse.get(i));
+        try {
+            if (parse.size() > 1) {
+                for (int i = 0; i < parse.size(); i++) {
+                    if ((i % 2) == 0) {
+                        component.add(spliterators.spliters(parse.get(i)));
+                    } else {
+                        operator.add(parse.get(i));
+                    }
                 }
+                set1.addAll(component.get(0));
+                set2.addAll(component.get(1));
+                for (int i = 0; i < operator.size(); i++) {
+                    String oprs = operator.get(i);
+                    if (oprs.equals(Constans.OPERATOR.get(0))) {
+                        tempory.addAll(BasicOperation.andOps(set1, set2));
+                    } else if (oprs.equals(Constans.OPERATOR.get(1))) {
+                        tempory.addAll(BasicOperation.orOps(set1, set2));
+                    } else if (oprs.equals(Constans.OPERATOR.get(2))) {
+                        tempory.addAll(BasicOperation.impOps(set1, set2));
+
+                    } else if (oprs.equals(Constans.OPERATOR.get(3))) {
+                        tempory.addAll(BasicOperation.bimpOps(set1, set2));
+
+                    } else {
+                    }
+                    set2.clear();
+                    int y = 2;
+                    try {
+                        set2.addAll(component.get(y));
+                        y++;
+                    } catch (Exception e) {
+
+                    }
+                    set1.clear();
+                    set1.addAll(tempory);
+                    tempory.clear();
+                }
+                return set1;
+            } else {
+                return spliterators.spliters(parse.get(0));
             }
-            set1.addAll(component.get(0));
-            set2.addAll(component.get(1));
-            for (int i = 0; i < operator.size(); i++) {
-                String oprs = operator.get(i);
-                if (oprs.equals(Constans.OPERATOR.get(0))) {
-                    tempory.addAll(BasicOperation.andOps(set1, set2));
-                } else if (oprs.equals(Constans.OPERATOR.get(1))) {
-                    tempory.addAll(BasicOperation.orOps(set1, set2));
-                } else if (oprs.equals(Constans.OPERATOR.get(2))) {
-                    tempory.addAll(BasicOperation.impOps(set1, set2));
-
-                } else if (oprs.equals(Constans.OPERATOR.get(3))) {
-                    tempory.addAll(BasicOperation.bimpOps(set1, set2));
-
-                } else {
-                }
-                set2.clear();
-                int y = 2;
-                try {
-                    set2.addAll(component.get(y));
-                    y++;
-                } catch (Exception e) {
-
-                }
-                set1.clear();
-                set1.addAll(tempory);
-                tempory.clear();
-            }
-            return set1;
-        } else {
-            return spliterators.spliters(parse.get(0));
+        } catch (Exception e) {
+            // System.err.println(e + "ite");
+            return null;
         }
-
     }
 
     @Override
-    public Integer call() throws Exception {
-        if (statement != null) {
-            List<String> parse = ParseLogics.parseLogic(statement);
-            if (parse.stream().anyMatch(item -> item.contains("r"))) {
-                this.spliterators.setStatusR(true);
+    public Integer call() {
+        try {
+            if (statement != null) {
+                List<String> parse = ParseLogics.parseLogic(statement);
+                if (parse.stream().anyMatch(item -> item.contains("r"))) {
+                    this.spliterators.setStatusR(true);
+                }
+                if ((parse.size() % 2) != 0) {
+                    System.out.println();
+                    System.out.println(iterateStatment(parse));
+                } else {
+                    System.err.println(new Exception("something wrong"));
+                }
             }
-            if ((parse.size() % 2) != 0) {
-                System.out.println();
-                System.out.println(iterateStatment(parse));
-            } else {
-                System.err.println(new Exception("something wrong"));
-            }
+        } catch (Exception e) {
+            System.err.println(e + " *`call");
         }
         return 1;
     }
