@@ -17,71 +17,72 @@ public class SpliteratorTest {
          */
         @Test
         void testSplits() {
-                assertNotNull(Spliterator.Spliters("~q"));
-                assertArrayEquals(List.of(false, false, true, true).toArray(), Spliterator.Spliters("~p").toArray());
+                Spliterators spliterator = new Spliterators();
+                assertNotNull(spliterator.spliters("~q"));
+                assertArrayEquals(List.of(false, false, true, true).toArray(), spliterator.spliters("~p").toArray());
 
-                assertArrayEquals(List.of(false, true, true, true).toArray(), Spliterator.Spliters("~(p&q)").toArray());
+                assertArrayEquals(List.of(false, true, true, true).toArray(), spliterator.spliters("~(p&q)").toArray());
                 assertArrayEquals(List.of(true, true, false, true).toArray(),
-                                Spliterator.Spliters("~(~p&q)").toArray());
+                                spliterator.spliters("~(~p&q)").toArray());
                 assertArrayEquals(List.of(true, false, true, true).toArray(),
-                                Spliterator.Spliters("~(p&~q)").toArray());
+                                spliterator.spliters("~(p&~q)").toArray());
                 assertArrayEquals(List.of(true, true, true, false).toArray(),
-                                Spliterator.Spliters("~(~p&~q)").toArray());
+                                spliterator.spliters("~(~p&~q)").toArray());
 
                 assertArrayEquals(List.of(false, false, false, true).toArray(),
-                                Spliterator.Spliters("~(p|q)").toArray());
+                                spliterator.spliters("~(p|q)").toArray());
                 assertArrayEquals(List.of(false, true, false, false).toArray(),
-                                Spliterator.Spliters("~(~p|q)").toArray());
+                                spliterator.spliters("~(~p|q)").toArray());
                 assertArrayEquals(List.of(false, false, true, false).toArray(),
-                                Spliterator.Spliters("~(p|~q)").toArray());
+                                spliterator.spliters("~(p|~q)").toArray());
                 assertArrayEquals(List.of(true, false, false, false).toArray(),
-                                Spliterator.Spliters("~(~p|~q)").toArray());
+                                spliterator.spliters("~(~p|~q)").toArray());
 
                 assertArrayEquals(List.of(false, true, false, false).toArray(),
-                                Spliterator.Spliters("~(p-q)").toArray());
+                                spliterator.spliters("~(p-q)").toArray());
                 assertArrayEquals(List.of(false, false, false, true).toArray(),
-                                Spliterator.Spliters("~(~p-q)").toArray());
+                                spliterator.spliters("~(~p-q)").toArray());
                 assertArrayEquals(List.of(true, false, false, false).toArray(),
-                                Spliterator.Spliters("~(p-~q)").toArray());
+                                spliterator.spliters("~(p-~q)").toArray());
                 assertArrayEquals(List.of(false, false, true, false).toArray(),
-                                Spliterator.Spliters("~(~p-~q)").toArray());
+                                spliterator.spliters("~(~p-~q)").toArray());
 
                 assertArrayEquals(List.of(false, true, true, false).toArray(),
-                                Spliterator.Spliters("~(p#q)").toArray());
+                                spliterator.spliters("~(p#q)").toArray());
                 assertArrayEquals(List.of(true, false, false, true).toArray(),
-                                Spliterator.Spliters("~(~p#q)").toArray());
+                                spliterator.spliters("~(~p#q)").toArray());
                 assertArrayEquals(List.of(true, false, false, true).toArray(),
-                                Spliterator.Spliters("~(p#~q)").toArray());
+                                spliterator.spliters("~(p#~q)").toArray());
                 assertArrayEquals(List.of(false, true, true, false).toArray(),
-                                Spliterator.Spliters("~(~p#~q)").toArray());
+                                spliterator.spliters("~(~p#~q)").toArray());
 
-                assertArrayEquals(List.of(true, false, false, false).toArray(), Spliterator.Spliters("p&q").toArray());
-                assertArrayEquals(List.of(false, false, true, false).toArray(), Spliterator.Spliters("~p&q").toArray());
-                assertArrayEquals(List.of(false, true, false, false).toArray(), Spliterator.Spliters("p&~q").toArray());
+                assertArrayEquals(List.of(true, false, false, false).toArray(), spliterator.spliters("p&q").toArray());
+                assertArrayEquals(List.of(false, false, true, false).toArray(), spliterator.spliters("~p&q").toArray());
+                assertArrayEquals(List.of(false, true, false, false).toArray(), spliterator.spliters("p&~q").toArray());
                 assertArrayEquals(List.of(false, false, false, true).toArray(),
-                                Spliterator.Spliters("~p&~q").toArray());
+                                spliterator.spliters("~p&~q").toArray());
 
-                assertArrayEquals(List.of(true, true, true, false).toArray(), Spliterator.Spliters("p|q").toArray());
-                assertArrayEquals(List.of(true, false, true, true).toArray(), Spliterator.Spliters("~p|q").toArray());
-                assertArrayEquals(List.of(true, true, false, true).toArray(), Spliterator.Spliters("p|~q").toArray());
-                assertArrayEquals(List.of(false, true, true, true).toArray(), Spliterator.Spliters("~p|~q").toArray());
+                assertArrayEquals(List.of(true, true, true, false).toArray(), spliterator.spliters("p|q").toArray());
+                assertArrayEquals(List.of(true, false, true, true).toArray(), spliterator.spliters("~p|q").toArray());
+                assertArrayEquals(List.of(true, true, false, true).toArray(), spliterator.spliters("p|~q").toArray());
+                assertArrayEquals(List.of(false, true, true, true).toArray(), spliterator.spliters("~p|~q").toArray());
 
-                assertArrayEquals(List.of(true, false, true, true).toArray(), Spliterator.Spliters("p-q").toArray());
-                assertArrayEquals(List.of(true, true, true, false).toArray(), Spliterator.Spliters("~p-q").toArray());
-                assertArrayEquals(List.of(false, true, true, true).toArray(), Spliterator.Spliters("p-~q").toArray());
-                assertArrayEquals(List.of(true, true, false, true).toArray(), Spliterator.Spliters("~p-~q").toArray());
+                assertArrayEquals(List.of(true, false, true, true).toArray(), spliterator.spliters("p-q").toArray());
+                assertArrayEquals(List.of(true, true, true, false).toArray(), spliterator.spliters("~p-q").toArray());
+                assertArrayEquals(List.of(false, true, true, true).toArray(), spliterator.spliters("p-~q").toArray());
+                assertArrayEquals(List.of(true, true, false, true).toArray(), spliterator.spliters("~p-~q").toArray());
 
-                assertArrayEquals(List.of(true, false, false, true).toArray(), Spliterator.Spliters("p#q").toArray());
-                assertArrayEquals(List.of(false, true, true, false).toArray(), Spliterator.Spliters("~p#q").toArray());
-                assertArrayEquals(List.of(false, true, true, false).toArray(), Spliterator.Spliters("p#~q").toArray());
-                assertArrayEquals(List.of(true, false, false, true).toArray(), Spliterator.Spliters("~p#~q").toArray());
+                assertArrayEquals(List.of(true, false, false, true).toArray(), spliterator.spliters("p#q").toArray());
+                assertArrayEquals(List.of(false, true, true, false).toArray(), spliterator.spliters("~p#q").toArray());
+                assertArrayEquals(List.of(false, true, true, false).toArray(), spliterator.spliters("p#~q").toArray());
+                assertArrayEquals(List.of(true, false, false, true).toArray(), spliterator.spliters("~p#~q").toArray());
         }
 
         @Test
         void testIfnegasi() {
-                Spliterator spliterator = new Spliterator();
-                Spliterator spliterator2 = new Spliterator();
-                Spliterator spliterator3 = new Spliterator();
+                Spliterators spliterator = new Spliterators();
+                Spliterators spliterator2 = new Spliterators();
+                Spliterators spliterator3 = new Spliterators();
                 assertFalse(spliterator.ifnegasi("t"));
                 assertTrue(spliterator.ifnegasi("~p"));
                 assertArrayEquals(List.of(false, false, true, true).toArray(),
@@ -103,7 +104,7 @@ public class SpliteratorTest {
 
         @Test
         void cleanStringTest() {
-                Spliterator spliterator = new Spliterator();
+                Spliterators spliterator = new Spliterators();
                 assertEquals("p&q", spliterator.cleanString("~p&~q"));
                 assertEquals("p&q", spliterator.cleanString("p&~q"));
                 assertEquals("p&q", spliterator.cleanString("~p&q"));
@@ -111,7 +112,7 @@ public class SpliteratorTest {
 
         @Test
         void findMethodTest() {
-                Spliterator spliterator = new Spliterator();
+                Spliterators spliterator = new Spliterators();
                 assertNull(spliterator.findMethod("w&q"));
                 assertNull(spliterator.findMethod("~w&q"));
                 assertNotNull(spliterator.findMethod("~p&q"));
@@ -157,7 +158,7 @@ public class SpliteratorTest {
 
         @Test
         void testGetbetween() {
-                Spliterator spliterator = new Spliterator();
+                Spliterators spliterator = new Spliterators();
                 assertEquals("q&p", spliterator.getbetween("(q&p)"));
                 assertEquals("p", spliterator.getbetween("(p)"));
                 assertEquals("q", spliterator.getbetween("(q)"));

@@ -9,6 +9,7 @@ public class BasicOperation {
     private List<Boolean> r = new ArrayList<>();
     private List<Boolean> pl1 = p;
     private List<Boolean> pl2 = q;
+    private boolean containsR = false;
 
     public BasicOperation() {
         generate(false);
@@ -19,7 +20,8 @@ public class BasicOperation {
     }
 
     public void generate(boolean containsR) {
-        if (containsR) {
+        this.containsR = containsR;
+        if (this.containsR) {
             this.p.addAll(List.of(true, true, true, true, false, false, false, false));
             this.q.addAll(List.of(true, true, false, false, true, true, false, false));
             this.r.addAll(List.of(true, false, true, false, true, false, true, false));
@@ -71,6 +73,14 @@ public class BasicOperation {
     public BasicOperation setR(List<Boolean> r) {
         this.r = r;
         return this;
+    }
+
+    public boolean isContainsR() {
+        return containsR;
+    }
+
+    public void setContainsR(boolean containsR) {
+        this.containsR = containsR;
     }
 
     /**

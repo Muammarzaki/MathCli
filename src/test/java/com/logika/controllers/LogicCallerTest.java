@@ -16,6 +16,12 @@ public class LogicCallerTest {
     void testIterateStatment() {
         List<String> parses = List.of("~(p&q)", "|", "(p-q)", "#", "~p");
         LogicCaller logicCaller = new LogicCaller();
-        assertArrayEquals(List.of(false, false, true, true).toArray(), logicCaller.iterateStatment(parses).toArray());
+        assertArrayEquals(List.of(false, false, true, true).toArray(),
+                logicCaller.iterateStatment(parses).toArray());
+        // List<String> parses2 = List.of("~(p&q)", "|", "(p-q)");
+        // LogicCaller logicCaller2 = new LogicCaller();
+        // System.out.println(logicCaller2.iterateStatment(parses2));
+        // assertArrayEquals(List.of(false, false, true, true).toArray(),
+        // logicCaller2.iterateStatment(parses2).toArray());
     }
 }

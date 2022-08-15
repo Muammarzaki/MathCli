@@ -6,7 +6,7 @@ import java.util.concurrent.Callable;
 
 import com.logika.Constans.Constans;
 import com.logika.helpers.logichelper.ParseLogics;
-import com.logika.helpers.logichelper.Spliterator;
+import com.logika.helpers.logichelper.Spliterators;
 import com.logika.services.logicops.BasicOperation;
 
 import picocli.CommandLine.Command;
@@ -14,6 +14,7 @@ import picocli.CommandLine.Option;
 
 @Command(name = "lgc", description = "compare string logic to boolean", version = "1.0", mixinStandardHelpOptions = true)
 public class LogicCaller implements Callable<Integer> {
+    Spliterators spliterators = new Spliterators();
     @Option(names = { "--v", "-value" }, description = "value to compare string")
     private String statement;
 
@@ -22,6 +23,7 @@ public class LogicCaller implements Callable<Integer> {
      * @return
      */
     public List<Boolean> iterateStatment(List<String> parse) {
+        spliterators.setStatusR(parse.stream().anyMatch(item -> item.contains("r")));
         List<Boolean> tempory = new ArrayList<>();
         List<List<Boolean>> component = new ArrayList<>();
         List<String> operator = new ArrayList<>();
@@ -31,7 +33,7 @@ public class LogicCaller implements Callable<Integer> {
         if (parse.size() > 1) {
             for (int i = 0; i < parse.size(); i++) {
                 if ((i % 2) == 0) {
-                    component.add(Spliterator.Spliters(parse.get(i)));
+                    component.add(spliterators.spliters(parse.get(i)));
                 } else {
                     operator.add(parse.get(i));
                 }
@@ -52,30 +54,38 @@ public class LogicCaller implements Callable<Integer> {
 
                 } else {
                 }
-                System.out.println(i);
                 set2.clear();
                 int y = 2;
-                set2.addAll(component.get(y));
-                y++;
+                try {
+                    set2.addAll(component.get(y));
+                    y++;
+                } catch (Exception e) {
+
+                }
                 set1.clear();
                 set1.addAll(tempory);
                 tempory.clear();
             }
             return set1;
         } else {
-            return Spliterator.Spliters(parse.get(0));
+            return spliterators.spliters(parse.get(0));
         }
 
     }
 
     @Override
     public Integer call() throws Exception {
-        List<String> parse = ParseLogics.parseLogic(statement);
-        System.out.println();
-        if ((parse.size() % 2) != 0) {
-            System.out.println(iterateStatment(parse));
-        } else {
-            System.err.println(new Exception("something wrong"));
+        if (statement != null) {
+            List<String> parse = ParseLogics.parseLogic(statement);
+            if (parse.stream().anyMatch(item -> item.contains("r"))) {
+                this.spliterators.setStatusR(true);
+            }
+            if ((parse.size() % 2) != 0) {
+                System.out.println();
+                System.out.println(iterateStatment(parse));
+            } else {
+                System.err.println(new Exception("something wrong"));
+            }
         }
         return 1;
     }
