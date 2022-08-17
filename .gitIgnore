@@ -1,7 +1,3 @@
 #target
-target/*
-!target/logikacli-1.0.jar
+target/
 .vscode/
-
-# files
-dependency-reduced-pom.xml
