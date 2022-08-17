@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.logika</groupId>
   <artifactId>logikacli</artifactId>
   <version>1.0</version>
   <name>logikacli</name>
+
   <!-- FIXME change it to the project's website -->
   <!-- <url>http://www.example.com</url> -->
 
@@ -28,12 +30,6 @@
       <version>5.9.0</version>
       <scope>test</scope>
     </dependency>
-    <!-- <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version>
-    </dependency> -->
-
   </dependencies>
 
   <build>
@@ -86,7 +82,38 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+        <!-- tambahan plugin -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>3.3.0</version>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>shade</goal>
+              </goals>
+              <configuration>
+                <minimizeJar>true</minimizeJar>
+                <shadedArtifactAttached>true</shadedArtifactAttached>
+                <shadedClassifierName>jar-with-dependencies</shadedClassifierName>
+                <transformers>
+                  <transformer implementation = "org.apache.maven.plugins.shade.resource.ManifestResource/Tranfsormer">
+                    <mainClass>com.logika.App</mainClass>
+                  </transformer>
+                </transformers>
+                <!-- <archive>
+                   -->
+                <descriptorRefs>
+                  <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <!-- //////////////////////////////////////// -->
       </plugins>
     </pluginManagement>
+
   </build>
 </project>
