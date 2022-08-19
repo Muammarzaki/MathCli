@@ -15,7 +15,7 @@ import picocli.CommandLine.Option;
 @Command(name = "lgc", description = "compare string logic to boolean", version = "1.0", mixinStandardHelpOptions = true)
 public class LogicCaller implements Callable<Integer> {
     Spliterators spliterators = new Spliterators();
-    @Option(names = { "--v", "-value" }, description = "value to compare string")
+    @Option(names = { "-v", "--value" }, description = "value to compare string")
     private String statement;
 
     /**

@@ -2,6 +2,9 @@
 target/*
 !target/logikacli-1.0.jar
 .vscode/
+costumJre/
 
 # files
 dependency-reduced-pom.xml
+*.txt
+*.sh
