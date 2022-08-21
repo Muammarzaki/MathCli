@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
 
 import picocli.CommandLine.Command;
 
-@Command(name = "mar", description = "Operation logic", mixinStandardHelpOptions = true, version = "1.0", subcommands = {
+@Command(name = "mathcli", description = "Operation logic", mixinStandardHelpOptions = true, version = "1.0", subcommands = {
         LogicCaller.class })
 public class CmdCaller implements Callable<Integer> {
 
