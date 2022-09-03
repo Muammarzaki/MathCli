@@ -14,7 +14,7 @@ untuk belajara/tools matematika dasar
 
 - Download file excutable
 - Install
-- Set pada environment variable path dgn menambah path app disimpan
+- [Set environment variable](https://docs.oracle.com/en/database/oracle/machine-learning/oml4r/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html#GUID-DD6F9982-60D5-48F6-8270-A27EC53807D0) path dgn menambah path app disimpan
 
   > contoh :
   > C:/program files/mathcli/
@@ -45,3 +45,7 @@ Fitur apapun diakses mulai dengan **mathcli** diikuti fitur
   - memiliki parameter <-v <string> atau --value <string>>
     > contoh
     > ~$ mathcli lgc --value "(~p&q)|(p#q)"
+
+### Note
+
+> untuk uninstall disarankan dgn hati hati jangan asal hapus file
