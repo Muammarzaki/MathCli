@@ -2,7 +2,6 @@ package com.logika.controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Formatter;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -91,7 +90,7 @@ public class LogicCaller implements Callable<Integer> {
                     this.spliterators.setStatusR(true);
                 }
                 if ((parse.size() % 2) != 0) {
-                    System.out.println(iterateStatment(parse));
+                    this.printResult(statement, iterateStatment(parse));
                 } else {
                     System.err.println(new Exception("something wrong"));
                 }
