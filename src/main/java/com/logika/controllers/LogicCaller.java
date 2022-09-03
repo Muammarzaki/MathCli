@@ -1,12 +1,15 @@
 package com.logika.controllers;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Formatter;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import com.logika.Constans.Constans;
 import com.logika.helpers.logichelper.ParseLogics;
 import com.logika.helpers.logichelper.Spliterators;
+import com.logika.helpers.print.Print;
 import com.logika.services.logicops.BasicOperation;
 
 import picocli.CommandLine.Command;
@@ -14,7 +17,9 @@ import picocli.CommandLine.Option;
 
 @Command(name = "lgc", description = "compare string logic to boolean", version = "1.0", mixinStandardHelpOptions = true)
 public class LogicCaller implements Callable<Integer> {
+
     Spliterators spliterators = new Spliterators();
+
     @Option(names = { "-v", "--value" }, description = "value to compare string")
     private String statement;
 
@@ -33,7 +38,7 @@ public class LogicCaller implements Callable<Integer> {
             if (parse.size() > 1) {
                 for (int i = 0; i < parse.size(); i++) {
                     if ((i % 2) == 0) {
-                        component.add(spliterators.spliters(parse.get(i)));
+                        component.add(i / 2, spliterators.spliters(parse.get(i)));
                     } else {
                         operator.add(parse.get(i));
                     }
@@ -78,6 +83,7 @@ public class LogicCaller implements Callable<Integer> {
 
     @Override
     public Integer call() {
+        statement = statement.toLowerCase();
         try {
             if (statement != null) {
                 List<String> parse = ParseLogics.parseLogic(statement);
@@ -85,7 +91,6 @@ public class LogicCaller implements Callable<Integer> {
                     this.spliterators.setStatusR(true);
                 }
                 if ((parse.size() % 2) != 0) {
-                    System.out.println();
                     System.out.println(iterateStatment(parse));
                 } else {
                     System.err.println(new Exception("something wrong"));
@@ -94,6 +99,17 @@ public class LogicCaller implements Callable<Integer> {
         } catch (Exception e) {
             System.err.println(e + " *`call");
         }
+        System.out.println();
         return 1;
     }
+
+    public void printResult(String prefix, Collection<Boolean> result) {
+        String printed = String.format("| %s | %s |", prefix, result.toString().replace("[", "").replace("]", ""));
+        int lenght = printed.length();
+        Print.topBottom(lenght);
+        System.out.println(printed);
+        Print.topBottom(lenght);
+
+    }
+
 }

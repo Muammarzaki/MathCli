@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 public class LogicCallerTest {
     @Test
     void testCall() {
+
         // new CommandLine(new logicCaller()).execute();
     }
 
@@ -21,8 +22,10 @@ public class LogicCallerTest {
                 logicCaller.iterateStatment(parses).toArray());
         List<String> parses2 = List.of("~(p&q)", "|", "(p-r)");
         LogicCaller logicCaller2 = new LogicCaller();
-        System.out.println(logicCaller2.iterateStatment(parses2));
+        // System.out.println(logicCaller2.iterateStatment(parses2));
         assertSame(8,
                 logicCaller2.iterateStatment(parses2).size());
+
+        logicCaller.printResult("true", logicCaller2.iterateStatment(parses2));
     }
 }

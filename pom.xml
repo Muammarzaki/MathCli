@@ -112,6 +112,9 @@
           </executions>
         </plugin>
         <!-- //////////////////////////////////////// -->
+        <!-- jreleaser -->
+
+        <!-- jreleaser -->
       </plugins>
     </pluginManagement>
 
