@@ -16,7 +16,7 @@ import com.logika.services.logicops.BasicOperation;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(name = "lgc", description = "compare string logic to boolean", version = "1.0", mixinStandardHelpOptions = true)
+@Command(name = "lgc", description = "compare string logic to boolean", version = "1.2", mixinStandardHelpOptions = true)
 public class LogicCaller implements Callable<Integer> {
 
     Spliterators spliterators = new Spliterators();
