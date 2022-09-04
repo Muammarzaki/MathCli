@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.logika.Constans.Constans;
 import com.logika.helpers.logichelper.ParseLogics;
@@ -22,6 +24,8 @@ public class LogicCaller implements Callable<Integer> {
     @Option(names = { "-v", "--value" }, description = "value to compare string")
     private String statement;
 
+    ExecutorService exe = Executors.newCachedThreadPool();
+
     /**
      * @param parse jika parse lebih dari 2
      * @return
@@ -35,11 +39,15 @@ public class LogicCaller implements Callable<Integer> {
         List<Boolean> set2 = new ArrayList<>();
         try {
             if (parse.size() > 1) {
-                for (int i = 0; i < parse.size(); i++) {
-                    if ((i % 2) == 0) {
-                        component.add(i / 2, spliterators.spliters(parse.get(i)));
+                for (int r = 0; r < parse.size(); r++) {
+                    if ((r % 2) == 0) {
+                        final int t = r;
+                        component.add(r / 2,
+                                exe.submit(() -> {
+                                    return spliterators.spliters(parse.get(t));
+                                }).get());
                     } else {
-                        operator.add(parse.get(i));
+                        operator.add(parse.get(r));
                     }
                 }
                 set1.addAll(component.get(0));
