@@ -2,12 +2,13 @@ package com.logika.controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.logika.Constans.Constans;
+import com.logika.constans.Operators;
 import com.logika.helpers.logichelper.ParseLogics;
 import com.logika.helpers.logichelper.Spliterators;
 import com.logika.helpers.print.Print;
@@ -16,7 +17,7 @@ import com.logika.services.logicops.BasicOperation;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(name = "lgc", description = "compare string logic to boolean", version = "1.2", mixinStandardHelpOptions = true)
+@Command(name = "lgc", description = "compare string logic to boolean", mixinStandardHelpOptions = true)
 public class LogicCaller implements Callable<Integer> {
 
     Spliterators spliterators = new Spliterators();
@@ -42,49 +43,59 @@ public class LogicCaller implements Callable<Integer> {
                 for (int r = 0; r < parse.size(); r++) {
                     if ((r % 2) == 0) {
                         final int t = r;
-                        component.add(r / 2,
-                                exe.submit(() -> {
-                                    return spliterators.spliters(parse.get(t));
-                                }).get());
+                        component.add(r / 2, spliterators.spliters(parse.get(t)));
                     } else {
                         operator.add(parse.get(r));
                     }
                 }
+                // set data 1 and data 2 to compare
                 set1.addAll(component.get(0));
                 set2.addAll(component.get(1));
-                for (int i = 0; i < operator.size(); i++) {
-                    String oprs = operator.get(i);
-                    if (oprs.equals(Constans.OPERATOR.get(0))) {
-                        tempory.addAll(BasicOperation.andOps(set1, set2));
-                    } else if (oprs.equals(Constans.OPERATOR.get(1))) {
-                        tempory.addAll(BasicOperation.orOps(set1, set2));
-                    } else if (oprs.equals(Constans.OPERATOR.get(2))) {
-                        tempory.addAll(BasicOperation.impOps(set1, set2));
-
-                    } else if (oprs.equals(Constans.OPERATOR.get(3))) {
-                        tempory.addAll(BasicOperation.bimpOps(set1, set2));
-
-                    } else {
-                    }
-                    set2.clear();
-                    int y = 2;
-                    try {
-                        set2.addAll(component.get(y));
-                        y++;
-                    } catch (Exception e) {
-
-                    }
-                    set1.clear();
-                    set1.addAll(tempory);
-                    tempory.clear();
-                }
+                iterateToCompare(tempory, component, operator, set1, set2);
+                exe.shutdown();
                 return set1;
             } else {
+                exe.shutdown();
                 return spliterators.spliters(parse.get(0));
             }
         } catch (Exception e) {
-            // System.err.println(e + "ite");
-            return null;
+            System.err.println(e.getMessage() + "help");
+            Thread.currentThread().interrupt();
+            return Collections.emptyList();
+
+        }
+    }
+
+    private void iterateToCompare(List<Boolean> tempory, List<List<Boolean>> component, List<String> operator,
+            List<Boolean> set1, List<Boolean> set2) {
+        /*
+         * compare data from boolean list
+         */
+        for (int i = 0, y = 1; i < operator.size(); i++) {
+            String oprs = operator.get(i);
+            if (oprs.equals(Operators.OPERATOR.get(0))) {
+                tempory.addAll(BasicOperation.andOps(set1, set2));
+            } else if (oprs.equals(Operators.OPERATOR.get(1))) {
+                tempory.addAll(BasicOperation.orOps(set1, set2));
+            } else if (oprs.equals(Operators.OPERATOR.get(2))) {
+                tempory.addAll(BasicOperation.impOps(set1, set2));
+
+            } else if (oprs.equals(Operators.OPERATOR.get(3))) {
+                tempory.addAll(BasicOperation.bimpOps(set1, set2));
+
+            } else {
+                // nothing to do
+            }
+            set2.clear();
+            try {
+                y++;// untuk
+                set2.addAll(component.get(y));
+            } catch (Exception e) {
+                // nothing to do
+            }
+            set1.clear();
+            set1.addAll(tempory);
+            tempory.clear();
         }
     }
 
@@ -104,12 +115,19 @@ public class LogicCaller implements Callable<Integer> {
                 }
             }
         } catch (Exception e) {
-            System.err.println(e + " *`call");
+            System.err.println(e);
+            return 1;
         }
         System.out.println();
-        return 1;
+        return 0;
     }
 
+    /**
+     * print hasil ke kosol
+     * 
+     * @param prefix
+     * @param result
+     */
     public void printResult(String prefix, Collection<Boolean> result) {
         String printed = String.format("| %s | %s |", prefix, result.toString().replace("[", "").replace("]", ""));
         int lenght = printed.length();

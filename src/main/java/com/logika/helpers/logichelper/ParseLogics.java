@@ -3,7 +3,7 @@ package com.logika.helpers.logichelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.logika.Constans.Constans;
+import com.logika.constans.Operators;
 
 public class ParseLogics {
 
@@ -69,7 +69,7 @@ public class ParseLogics {
     }
 
     public int getIndexOps(String str) {
-        for (String item : Constans.OPERATOR) {
+        for (String item : Operators.OPERATOR) {
             if (str.indexOf(item) >= 0) {
                 return str.indexOf(item);
             }
@@ -78,6 +78,6 @@ public class ParseLogics {
     }
 
     public boolean checkStartWith(String str) {
-        return Constans.OPERATOR.stream().anyMatch(item -> str.startsWith(item));
+        return Operators.OPERATOR.stream().anyMatch(item -> str.startsWith(item));
     }
 }

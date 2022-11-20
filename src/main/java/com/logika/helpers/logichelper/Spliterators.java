@@ -1,8 +1,9 @@
 package com.logika.helpers.logichelper;
 
+import java.util.Collections;
 import java.util.List;
 
-import com.logika.Constans.Constans;
+import com.logika.constans.Operators;
 import com.logika.services.logicops.BasicOperation;
 import com.logika.services.logicops.Negasi;
 
@@ -21,33 +22,34 @@ public class Spliterators {
     public List<Boolean> findMethod(String statement) {
         basicOperation = new BasicOperation(this.statusR);
         statement = statement.toLowerCase();
+        Exception exceptions = new Exception("error not statement please use [~,"
+                + Operators.OPERATOR.toString().replace("[", "").replace("]", "") + ",p,q]");
+
         try {
             if (cleanString(statement).length() == 3) {
                 setIndex(cleanString(statement));
             }
             if (basicOperation.getPl1() == null || basicOperation.getPl2() == null) {
-                throw new Exception("error not statement please use [~,"
-                        + Constans.OPERATOR.toString().replace("[", "").replace("]", "") + ",p,q]");
+                throw exceptions;
             }
             if (ifnegasi(statement)) {
                 statement = cleanString(statement);
             }
             if (statement.length() == 3) {
-                if (statement.contains(Constans.OPERATOR.get(0))) {
+                if (statement.contains(Operators.OPERATOR.get(0))) {
                     // AND
                     return basicOperation.andOps();
-                } else if (statement.contains(Constans.OPERATOR.get(1))) {
+                } else if (statement.contains(Operators.OPERATOR.get(1))) {
                     // OR
                     return basicOperation.orOps();
-                } else if (statement.contains(Constans.OPERATOR.get(2))) {
+                } else if (statement.contains(Operators.OPERATOR.get(2))) {
                     // IMPLIKASI
                     return basicOperation.impOps();
-                } else if (statement.contains(Constans.OPERATOR.get(3))) {
+                } else if (statement.contains(Operators.OPERATOR.get(3))) {
                     // BIIMPLIKASI
                     return basicOperation.bimpOps();
                 } else {
-                    new Exception("error not statement please use [~,"
-                            + Constans.OPERATOR.toString().replace("[", "").replace("]", "") + ",p,q]");
+                    throw exceptions;
                 }
             } else if (statement.length() == 1) {
                 if (statement.equals("p")) {
@@ -57,17 +59,16 @@ public class Spliterators {
                 } else if (statement.equals("r")) {
                     return basicOperation.getR();
                 } else {
-                    new Exception("error not statement please use [~,"
-                            + Constans.OPERATOR.toString().replace("[", "").replace("]", "") + ",p,q]");
+                    throw exceptions;
                 }
             } else {
-                new Exception("error not statement");
+                throw new Exception("error not statement");
             }
         } catch (Exception e) {
             System.out.println(e);
         }
 
-        return null;
+        return Collections.emptyList();
 
     }
 
@@ -108,7 +109,6 @@ public class Spliterators {
                     singelNegasi(getbetween(str));
                     str = str.replaceFirst("~", "");
                 }
-                // str = str.substring(index + 2);
                 return true;
             } else {
                 return false;
@@ -145,6 +145,7 @@ public class Spliterators {
                 throw new Exception("must be singel char");
             }
         } else {
+            // nothing to do
         }
     }
 

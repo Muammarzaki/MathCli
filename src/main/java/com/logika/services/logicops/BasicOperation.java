@@ -2,6 +2,7 @@ package com.logika.services.logicops;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BasicOperation {
     private List<Boolean> p = new ArrayList<>();
@@ -179,7 +180,7 @@ public class BasicOperation {
         List<Boolean> result = new ArrayList<>();
         if (p1.size() == p2.size()) {
             for (int i = 0; i < p1.size(); i++) {
-                result.add(!(p1.get(i) != p2.get(i)));
+                result.add((Objects.equals(p1.get(i), p2.get(i))));
             }
         }
 

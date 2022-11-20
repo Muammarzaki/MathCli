@@ -5,14 +5,17 @@ import com.logika.controllers.LogicCaller;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-@Command(name = "mathcli", description = "Operation logic", mixinStandardHelpOptions = true, version = "1.0", subcommands = {
+@Command(name = "mathcli", description = "Operation logic", mixinStandardHelpOptions = true, version = "1.2.0-beta", subcommands = {
         LogicCaller.class })
+
 public class App implements Runnable {
     public static void main(String[] args) {
         System.gc();
-        int execute = 0;
+        int execute;
         execute = new CommandLine(new App()).execute(args);
-        System.exit(execute);
+        if (execute > 0) {
+            System.exit(execute);
+        }
     }
 
     @Override

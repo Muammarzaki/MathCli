@@ -2,7 +2,7 @@
 target/*
 !target/logikacli-1.0.jar
 .vscode/
-costumJre/
+costumJre**/
 *.exe
 *.msi
 # files

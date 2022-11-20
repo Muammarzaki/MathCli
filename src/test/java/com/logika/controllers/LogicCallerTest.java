@@ -8,11 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class LogicCallerTest {
-    @Test
-    void testCall() {
-
-        // new CommandLine(new logicCaller()).execute();
-    }
 
     @Test
     void testIterateStatment() {
@@ -20,6 +15,8 @@ public class LogicCallerTest {
         LogicCaller logicCaller = new LogicCaller();
         assertArrayEquals(List.of(false, false, true, true).toArray(),
                 logicCaller.iterateStatment(parses).toArray());
+
+        // test value 2
         List<String> parses2 = List.of("~(p&q)", "|", "(p-r)");
         LogicCaller logicCaller2 = new LogicCaller();
         // System.out.println(logicCaller2.iterateStatment(parses2));
