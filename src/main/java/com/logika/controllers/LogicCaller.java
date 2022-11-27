@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import com.logika.constans.Operators;
 import com.logika.helpers.logichelper.ParseLogics;
@@ -113,7 +111,6 @@ public class LogicCaller implements Callable<Integer> {
             System.err.println(e);
             return 1;
         }
-        System.out.println();
         return 0;
     }
 
@@ -133,11 +130,11 @@ public class LogicCaller implements Callable<Integer> {
     }
 
     private String[] getPremiscoutn(String str) {
-        str.replace("(", "").replace(")", "").replace("~", "").trim();
+        str = str.replace("(", "").replace(")", "").replace("~", "").trim();
         for (String iterable_element : Operators.OPERATOR) {
-            str.replace(iterable_element, "");
+            str = str.replace(iterable_element, " ").trim();
         }
-        return str.split("");
+        return str.split(" ");
 
     }
 }

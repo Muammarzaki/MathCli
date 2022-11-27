@@ -3,9 +3,12 @@ package com.logika.controllers;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+
+import com.logika.constans.Operators;
 
 public class LogicCallerTest {
 
@@ -24,5 +27,20 @@ public class LogicCallerTest {
                 logicCaller2.iterateStatment(parses2).size());
 
         logicCaller.printResult("true", logicCaller2.iterateStatment(parses2));
+    }
+
+    @Test
+    public void test() {
+        System.out.println(
+                Arrays.asList(getPremiscoutn("~p")));
+    }
+
+    private String[] getPremiscoutn(String str) {
+        str = str.replace("(", "").replace(")", "").replace("~", "").trim();
+        for (String iterable_element : Operators.OPERATOR) {
+            str.replace(iterable_element, " ");
+        }
+        return str.split(" ");
+
     }
 }

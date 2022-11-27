@@ -46,10 +46,11 @@ public class BasicOperation {
             final int t = i;
             List<Boolean> premis = exe.submit(() -> {
                 return generate(charCount, t);
-            }).get(50, TimeUnit.MILLISECONDS);
+            }).get(5, TimeUnit.MILLISECONDS);
             table.set(i, premis);
             tableChart.put(chars[i], premis);
         }
+        exe.shutdown();
     }
 
     private List<Boolean> generate(Integer size, Integer index) {
@@ -58,7 +59,7 @@ public class BasicOperation {
         List<Boolean> v = new ArrayList<>();
         for (int i = 1; i <= perbesaran; i++) {
             v.add(titikBalik);
-            if (i % ((perbesaran/2) / Math.pow(2, index)) == 0) {
+            if (i % ((perbesaran / 2) / Math.pow(2, index)) == 0) {
                 titikBalik = !titikBalik;
             }
         }
