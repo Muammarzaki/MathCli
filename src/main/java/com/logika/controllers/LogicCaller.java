@@ -1,9 +1,14 @@
 package com.logika.controllers;
 
+import java.security.spec.RSAPublicKeySpec;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import com.logika.constans.Operators;
@@ -134,7 +139,7 @@ public class LogicCaller implements Callable<Integer> {
         for (String iterable_element : Operators.OPERATOR) {
             str = str.replace(iterable_element, " ").trim();
         }
-        return str.split(" ");
-
+        Set<String> result = new HashSet<>(List.of(str.split(" ")));
+        return Arrays.copyOf(result.toArray(), result.size(), String[].class);
     }
 }

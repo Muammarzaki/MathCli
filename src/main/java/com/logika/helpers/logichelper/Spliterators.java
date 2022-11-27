@@ -1,6 +1,5 @@
 package com.logika.helpers.logichelper;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +9,7 @@ import com.logika.services.logicops.BasicOperationSingelton;
 import com.logika.services.logicops.Negasi;
 
 public class Spliterators {
-    public BasicOperation basicOperation;
+    private BasicOperation basicOperation;
 
     /**
      * 
@@ -43,11 +42,10 @@ public class Spliterators {
                 } else if (statement.contains(Operators.OPERATOR.get(3))) {
                     return BasicOperation.bimpOps(premis1, premis2);
                 } else {
-              System.err.println("something wrong");
+                    System.err.println("something wrong");
                 }
                 return Collections.emptyList();
             } else {
-                System.out.println(premis[0]);
                 return ifnegasi(premis[0]);
             }
         } catch (Exception e) {

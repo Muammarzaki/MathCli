@@ -9,3 +9,4 @@ costumJre**/
 dependency-reduced-pom.xml
 *.txt
 *.sh
+/executes
