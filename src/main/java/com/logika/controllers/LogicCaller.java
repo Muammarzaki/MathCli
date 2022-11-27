@@ -13,6 +13,7 @@ import com.logika.helpers.logichelper.ParseLogics;
 import com.logika.helpers.logichelper.Spliterators;
 import com.logika.helpers.print.Print;
 import com.logika.services.logicops.BasicOperation;
+import com.logika.services.logicops.BasicOperationSingelton;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -25,14 +26,11 @@ public class LogicCaller implements Callable<Integer> {
     @Option(names = { "-v", "--value" }, description = "value to compare string")
     private String statement;
 
-    ExecutorService exe = Executors.newCachedThreadPool();
-
     /**
      * @param parse jika parse lebih dari 2
      * @return
      */
     public List<Boolean> iterateStatment(List<String> parse) {
-        spliterators.setStatusR(parse.stream().anyMatch(item -> item.contains("r")));
         List<Boolean> tempory = new ArrayList<>();
         List<List<Boolean>> component = new ArrayList<>();
         List<String> operator = new ArrayList<>();
@@ -52,10 +50,8 @@ public class LogicCaller implements Callable<Integer> {
                 set1.addAll(component.get(0));
                 set2.addAll(component.get(1));
                 iterateToCompare(tempory, component, operator, set1, set2);
-                exe.shutdown();
                 return set1;
             } else {
-                exe.shutdown();
                 return spliterators.spliters(parse.get(0));
             }
         } catch (Exception e) {
@@ -102,12 +98,11 @@ public class LogicCaller implements Callable<Integer> {
     @Override
     public Integer call() {
         statement = statement.toLowerCase();
+        BasicOperationSingelton.getIntence(getPremiscoutn(statement));
         try {
             if (statement != null) {
                 List<String> parse = ParseLogics.parseLogic(statement);
-                if (parse.stream().anyMatch(item -> item.contains("r"))) {
-                    this.spliterators.setStatusR(true);
-                }
+
                 if ((parse.size() % 2) != 0) {
                     this.printResult(statement, iterateStatment(parse));
                 } else {
@@ -137,4 +132,12 @@ public class LogicCaller implements Callable<Integer> {
 
     }
 
+    private String[] getPremiscoutn(String str) {
+        str.replace("(", "").replace(")", "").replace("~", "").trim();
+        for (String iterable_element : Operators.OPERATOR) {
+            str.replace(iterable_element, "");
+        }
+        return str.split("");
+
+    }
 }

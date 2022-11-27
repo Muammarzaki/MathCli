@@ -5,69 +5,44 @@ import java.util.List;
 
 import com.logika.constans.Operators;
 import com.logika.services.logicops.BasicOperation;
+import com.logika.services.logicops.BasicOperationSingelton;
 import com.logika.services.logicops.Negasi;
 
 public class Spliterators {
-    public BasicOperation basicOperation = new BasicOperation();
-    private boolean statusR = false;
+    public BasicOperation basicOperation = BasicOperationSingelton.getIntence();
 
-    public void setStatusR(boolean statusR) {
-        this.statusR = statusR;
+    /**
+     * 
+     */
+    public Spliterators() {
+        // nothing to do
     }
+
+    Exception exceptions = new Exception("error not statement please use [~,"
+            + Operators.OPERATOR.toString().replace("[", "").replace("]", "") + ",p,q]");
 
     /**
      * @param statement
      * @return
      */
     public List<Boolean> findMethod(String statement) {
-        basicOperation = new BasicOperation(this.statusR);
         statement = statement.toLowerCase();
-        Exception exceptions = new Exception("error not statement please use [~,"
-                + Operators.OPERATOR.toString().replace("[", "").replace("]", "") + ",p,q]");
+        String[] premis = getPremisAndOperator(statement);
+        List<Boolean> premis1 = ifnegasi(premis[0]);
+        List<Boolean> premis2 = ifnegasi(premis[1]);
 
-        try {
-            if (cleanString(statement).length() == 3) {
-                setIndex(cleanString(statement));
-            }
-            if (basicOperation.getPl1() == null || basicOperation.getPl2() == null) {
-                throw exceptions;
-            }
-            if (ifnegasi(statement)) {
-                statement = cleanString(statement);
-            }
-            if (statement.length() == 3) {
-                if (statement.contains(Operators.OPERATOR.get(0))) {
-                    // AND
-                    return basicOperation.andOps();
-                } else if (statement.contains(Operators.OPERATOR.get(1))) {
-                    // OR
-                    return basicOperation.orOps();
-                } else if (statement.contains(Operators.OPERATOR.get(2))) {
-                    // IMPLIKASI
-                    return basicOperation.impOps();
-                } else if (statement.contains(Operators.OPERATOR.get(3))) {
-                    // BIIMPLIKASI
-                    return basicOperation.bimpOps();
-                } else {
-                    throw exceptions;
-                }
-            } else if (statement.length() == 1) {
-                if (statement.equals("p")) {
-                    return basicOperation.getP();
-                } else if (statement.equals("q")) {
-                    return basicOperation.getQ();
-                } else if (statement.equals("r")) {
-                    return basicOperation.getR();
-                } else {
-                    throw exceptions;
-                }
-            } else {
-                throw new Exception("error not statement");
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+        if (statement.contains(Operators.OPERATOR.get(0))) {
+            return BasicOperation.andOps(premis1, premis2);
+        } else if (statement.contains(Operators.OPERATOR.get(1))) {
+            return BasicOperation.orOps(premis1, premis2);
+        } else if (statement.contains(Operators.OPERATOR.get(2))) {
+            return BasicOperation.impOps(premis1, premis2);
+
+        } else if (statement.contains(Operators.OPERATOR.get(3))) {
+            return BasicOperation.bimpOps(premis1, premis2);
+        } else {
+            System.out.println("ini error nya");
         }
-
         return Collections.emptyList();
 
     }
@@ -100,52 +75,12 @@ public class Spliterators {
      * @param str
      * @return
      */
-    public Boolean ifnegasi(String str) {
-        int index = str.indexOf("~");
-        try {
-            if (str.contains("~") && str.substring(index + 1, index + 2) != null
-                    && !str.substring(index + 1, index + 2).equals("(")) {
-                while (str.indexOf("~") > -1) {
-                    singelNegasi(getbetween(str));
-                    str = str.replaceFirst("~", "");
-                }
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            System.err.println(e + "neg");
-            return false;
-        }
-
-    }
-
-    /**
-     * @param str
-     * @param index
-     * @throws Exception
-     */
-    private void singelNegasi(String str) throws Exception {
-        int index = str.indexOf("~");
-        if (str.length() > 2) {
-            if (index > -1 && index < 2) {
-                this.basicOperation.setPl1(Negasi.negasi(this.basicOperation.getPl1()));
-            } else if (index >= 2 && index < 4) {
-                this.basicOperation.setPl2(Negasi.negasi(this.basicOperation.getPl2()));
-            } else {
-                throw new Exception("must be singel char");
-            }
-        } else if (str.length() < 3) {
-
-            if (str.substring(index + 1, index + 2).equals("p")) {
-                this.basicOperation.setP(Negasi.negasi(this.basicOperation.getP()));
-            } else if (str.substring(index + 1, index + 2).equals("q")) {
-                this.basicOperation.setQ(Negasi.negasi(this.basicOperation.getQ()));
-            } else {
-                throw new Exception("must be singel char");
-            }
+    public List<Boolean> ifnegasi(String str) {
+        if (str.contains("~")) {
+            str.replace("~", "");
+            return Negasi.negasi(basicOperation.getTableChart().get(str));
         } else {
-            // nothing to do
+            return basicOperation.getTableChart().get(str);
         }
     }
 
@@ -157,37 +92,14 @@ public class Spliterators {
         return str.replace("~", "");
     }
 
-    public void setIndex(String Statement) {
-        String index1 = Statement.substring(0, 1);
-        String index2 = Statement.substring(2);
-
-        switch (index1) {
-            case "p":
-                basicOperation.setPl1(basicOperation.getP());
-                break;
-            case "q":
-                basicOperation.setPl1(basicOperation.getQ());
-                break;
-            case "r":
-                basicOperation.setPl1(basicOperation.getR());
-                break;
-            default:
-                basicOperation.setPl1(null);
-                break;
+    public String[] getPremisAndOperator(String statement) {
+        statement = getbetween(statement);
+        for (String iterable_element : Operators.OPERATOR) {
+            if (statement.contains(iterable_element)) {
+                statement.replace(iterable_element, " ").trim();
+            }
         }
-        switch (index2) {
-            case "p":
-                basicOperation.setPl2(basicOperation.getP());
-                break;
-            case "q":
-                basicOperation.setPl2(basicOperation.getQ());
-                break;
-            case "r":
-                basicOperation.setPl2(basicOperation.getR());
-                break;
-            default:
-                basicOperation.setPl2(null);
-                break;
-        }
+        return statement.split(" ");
     }
+
 }

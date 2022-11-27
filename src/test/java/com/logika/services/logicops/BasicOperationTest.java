@@ -1,7 +1,7 @@
 package com.logika.services.logicops;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BasicOperationTest {
+    BasicOperation bsc;
 
     @BeforeEach
     void setUp() {
@@ -21,33 +22,52 @@ public class BasicOperationTest {
 
     }
 
+    // @Test
+    // public void testDanOps() {
+    // BasicOperation basicOperation = new BasicOperation();
+    // assertNotNull(basicOperation.andOps());
+    // assertArrayEquals(List.of(true, false, false, false).toArray(),
+    // basicOperation.andOps().toArray());
+    // }
+
+    // @Test
+    // void testorOps() {
+    // BasicOperation basicOperation = new BasicOperation();
+
+    // assertNotNull(basicOperation.orOps());
+    // assertArrayEquals(List.of(true, true, true, false).toArray(),
+    // basicOperation.orOps().toArray());
+    // }
+
+    // @Test
+    // void bimOpsTest() {
+    // BasicOperation basicOperation = new BasicOperation();
+    // assertNotNull(basicOperation.impOps());
+    // assertArrayEquals(List.of(true, false, true, true).toArray(),
+    // basicOperation.impOps().toArray());
+    // }
+
+    // @Test
+    // void bimOps2Test() {
+    // BasicOperation basicOperation = new BasicOperation();
+    // assertNotNull(basicOperation.bimpOps());
+    // assertArrayEquals(List.of(true, false, false, true).toArray(),
+    // basicOperation.bimpOps().toArray());
+    // }
     @Test
-    public void testDanOps() {
-        BasicOperation basicOperation = new BasicOperation();
-        assertNotNull(basicOperation.andOps());
-        assertArrayEquals(List.of(true, false, false, false).toArray(), basicOperation.andOps().toArray());
+    void checkSize3() {
+        bsc = new BasicOperation("p", "q", "r");
+        assertEquals(3, bsc.getTable().size());
+        System.out.println(bsc.getTable().get(2));
+        assertEquals(8, bsc.getTable().get(0).size());
     }
 
     @Test
-    void testorOps() {
-        BasicOperation basicOperation = new BasicOperation();
-
-        assertNotNull(basicOperation.orOps());
-        assertArrayEquals(List.of(true, true, true, false).toArray(), basicOperation.orOps().toArray());
-    }
-
-    @Test
-    void bimOpsTest() {
-        BasicOperation basicOperation = new BasicOperation();
-        assertNotNull(basicOperation.impOps());
-        assertArrayEquals(List.of(true, false, true, true).toArray(), basicOperation.impOps().toArray());
-    }
-
-    @Test
-    void bimOps2Test() {
-        BasicOperation basicOperation = new BasicOperation();
-        assertNotNull(basicOperation.bimpOps());
-        assertArrayEquals(List.of(true, false, false, true).toArray(), basicOperation.bimpOps().toArray());
+    void checkSize2() {
+        bsc = new BasicOperation("p", "q");
+        assertEquals(2, bsc.getTable().size());
+        System.out.println(bsc.getTable().get(0));
+        assertEquals(4, bsc.getTable().get(0).size());
     }
 
     @Test

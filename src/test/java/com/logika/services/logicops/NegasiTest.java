@@ -12,22 +12,11 @@ public class NegasiTest {
 
         @Test
         void testNegasi() {
-                BasicOperation basicOperation = new BasicOperation();
 
                 assertNotNull(Negasi.negasi(List.of(true, false)));
                 assertArrayEquals(List.of(false, true).toArray(), Negasi.negasi(List.of(true, false)).toArray());
                 assertArrayEquals(List.of(false, true, false, true).toArray(),
                                 Negasi.negasi(List.of(true, false, true, false)).toArray());
-
-                assertArrayEquals(List.of(false, true, true, true).toArray(),
-                                Negasi.negasi(basicOperation.andOps()).toArray());
-                assertArrayEquals(List.of(false, false, false, true).toArray(),
-                                Negasi.negasi(basicOperation.orOps()).toArray());
-                assertArrayEquals(List.of(false, true, false, false).toArray(),
-                                Negasi.negasi(basicOperation.impOps()).toArray());
-                assertArrayEquals(List.of(false, true, true, false).toArray(),
-                                Negasi.negasi(basicOperation.bimpOps()).toArray());
-
         }
 
         @Test

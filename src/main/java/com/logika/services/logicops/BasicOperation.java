@@ -1,122 +1,68 @@
 package com.logika.services.logicops;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class BasicOperation {
-    private List<Boolean> p = new ArrayList<>();
-    private List<Boolean> q = new ArrayList<>();
-    private List<Boolean> r = new ArrayList<>();
-    private List<Boolean> pl1 = p;
-    private List<Boolean> pl2 = q;
-    private boolean containsR = false;
+    private List<List<Boolean>> table = new ArrayList<>();
+    private Map<String, List<Boolean>> tableChart = new HashMap<>();
+    private List<Boolean> premis1;
+    private List<Boolean> premis2;
 
-    public BasicOperation() {
-        generate(false);
+    public BasicOperation(String... premis) {
+        generate(premis);
     }
 
-    public BasicOperation(boolean containsR) {
-        generate(containsR);
+    public BasicOperation generate(String... chars) {
+        try {
+            generateLogicTable(chars.length, chars);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return this;
     }
 
-    public void generate(boolean containsR) {
-        this.containsR = containsR;
-        if (this.containsR) {
-            this.p.addAll(List.of(true, true, true, true, false, false, false, false));
-            this.q.addAll(List.of(true, true, false, false, true, true, false, false));
-            this.r.addAll(List.of(true, false, true, false, true, false, true, false));
-        } else {
-            this.p.addAll(List.of(true, true, false, false));
-            this.q.addAll(List.of(true, false, true, false));
+    private void generateLogicTable(Integer charCount, String... chars)
+            throws InterruptedException, ExecutionException, TimeoutException {
+
+        ExecutorService exe = Executors.newFixedThreadPool(charCount);
+
+        for (int i = 0; i < charCount; i++) {
+            table.add(Collections.emptyList());
+            final int t = i;
+            List<Boolean> premis = exe.submit(() -> {
+                return generate(charCount, t);
+            }).get(50, TimeUnit.MILLISECONDS);
+            table.set(i, premis);
+            tableChart.put(chars[i], premis);
         }
     }
 
-    public List<Boolean> getP() {
-        return p;
-    }
-
-    public BasicOperation setP(List<Boolean> p) {
-        this.p = p;
-        return this;
-    }
-
-    public List<Boolean> getQ() {
-        return q;
-    }
-
-    public BasicOperation setQ(List<Boolean> q) {
-        this.q = q;
-        return this;
-
-    }
-
-    public List<Boolean> getR() {
-        return r;
-    }
-
-    public List<Boolean> getPl1() {
-        return pl1;
-    }
-
-    public void setPl1(List<Boolean> pl1) {
-        this.pl1 = pl1;
-    }
-
-    public List<Boolean> getPl2() {
-        return pl2;
-    }
-
-    public void setPl2(List<Boolean> pl2) {
-        this.pl2 = pl2;
-    }
-
-    public BasicOperation setR(List<Boolean> r) {
-        this.r = r;
-        return this;
-    }
-
-    public boolean isContainsR() {
-        return containsR;
-    }
-
-    public void setContainsR(boolean containsR) {
-        this.containsR = containsR;
-    }
-
-    /**
-     * dan / AND
-     * 
-     * @return {true,false,false,false}
-     */
-    public List<Boolean> andOps() {
-        return BasicOperation.andOps(this.pl1, this.pl2);
-    }
-
-    /**
-     * atau / Or
-     * 
-     * @return
-     */
-    public List<Boolean> orOps() {
-
-        return BasicOperation.orOps(this.pl1, this.pl2);
-    }
-
-    /**
-     * Bimplikasi
-     * 
-     * @return
-     */
-    public List<Boolean> impOps() {
-        return BasicOperation.impOps(this.pl1, this.pl2);
-    }
-
-    /**
-     * @return
-     */
-    public List<Boolean> bimpOps() {
-        return BasicOperation.bimpOps(this.pl1, this.pl2);
+    private List<Boolean> generate(Integer size, Integer index) {
+        Boolean titikBalik = true;
+        Double perbesaran = Math.pow(2, size);
+        List<Boolean> v = new ArrayList<>();
+        for (int i = 1; i <= perbesaran; i++) {
+            v.add(titikBalik);
+            if (i % ((perbesaran/2) / Math.pow(2, index)) == 0) {
+                titikBalik = !titikBalik;
+            }
+        }
+        return v;
     }
 
     /**
@@ -160,7 +106,7 @@ public class BasicOperation {
         List<Boolean> result = new ArrayList<>();
         if (p1.size() == p2.size()) {
             for (int i = 0; i < p1.size(); i++) {
-                if (p1.get(i) == true && p2.get(i) == false) {
+                if (Boolean.TRUE.equals(p1.get(i)) && Boolean.TRUE.equals(p2.get(i) == Boolean.FALSE)) {
                     result.add(false);
                 } else {
                     result.add(true);
@@ -185,6 +131,62 @@ public class BasicOperation {
         }
 
         return result;
+    }
+
+    /**
+     * @return the table
+     */
+    public List<List<Boolean>> getTable() {
+        return table;
+    }
+
+    /**
+     * @param table the table to set
+     */
+    public void setTable(List<List<Boolean>> table) {
+        this.table = table;
+    }
+
+    /**
+     * @return the tableChart
+     */
+    public Map<String, List<Boolean>> getTableChart() {
+        return tableChart;
+    }
+
+    /**
+     * @param tableChart the tableChart to set
+     */
+    public void setTableChart(Map<String, List<Boolean>> tableChart) {
+        this.tableChart = tableChart;
+    }
+
+    /**
+     * @return the premis1
+     */
+    public List<Boolean> getPremis1() {
+        return premis1;
+    }
+
+    /**
+     * @param premis1 the premis1 to set
+     */
+    public void setPremis1(List<Boolean> premis1) {
+        this.premis1 = premis1;
+    }
+
+    /**
+     * @return the premis2
+     */
+    public List<Boolean> getPremis2() {
+        return premis2;
+    }
+
+    /**
+     * @param premis2 the premis2 to set
+     */
+    public void setPremis2(List<Boolean> premis2) {
+        this.premis2 = premis2;
     }
 
 }

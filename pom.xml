@@ -5,12 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.logika</groupId>
-  <artifactId>logikacli</artifactId>
+  <artifactId>mathcli</artifactId>
   <version>1.2.0</version>
-  <name>logikacli</name>
-
-  <!-- FIXME change it to the project's website -->
-  <!-- <url>http://www.example.com</url> -->
+  <name>mathcli</name>
+  <url>http://github.com/muammarzaki/mathcli</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -98,7 +96,7 @@
                 <shadedArtifactAttached>true</shadedArtifactAttached>
                 <shadedClassifierName>jar-with-dependencies</shadedClassifierName>
                 <transformers>
-                  <transformer implementation = "org.apache.maven.plugins.shade.resource.ManifestResource/Tranfsormer">
+                  <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResource/Tranfsormer">
                     <mainClass>com.logika.App</mainClass>
                   </transformer>
                 </transformers>
