@@ -10,7 +10,6 @@ import picocli.CommandLine.Command;
 
 public class App implements Runnable {
     public static void main(String[] args) {
-        System.gc();
         int execute;
         execute = new CommandLine(new App()).execute(args);
         if (execute > 0) {
@@ -20,6 +19,6 @@ public class App implements Runnable {
 
     @Override
     public void run() {
-
+        // nothing to do
     }
 }
