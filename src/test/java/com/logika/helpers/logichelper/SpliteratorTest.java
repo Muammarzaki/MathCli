@@ -8,10 +8,11 @@ import org.junit.jupiter.api.Test;
 
 public class SpliteratorTest {
         /**
+         * @throws Exception
          * 
          */
         @Test
-        void testSplits() {
+        void testSplits() throws Exception {
                 Spliterators spliterator = new Spliterators();
                 assertNotNull(spliterator.spliters("~q"));
                 // Spliterators spliterator2 = new Spliterators();

@@ -5,7 +5,7 @@ import com.logika.controllers.LogicCaller;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-@Command(name = "mathcli", description = "Operation logic", mixinStandardHelpOptions = true, version = "1.2.0-beta", subcommands = {
+@Command(name = "mathcli", description = "Operation logic", mixinStandardHelpOptions = true, version = "1.2.5", subcommands = {
         LogicCaller.class })
 
 public class App implements Runnable {

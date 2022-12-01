@@ -68,8 +68,9 @@ public class Spliterators {
      * [~(~p&q)]
      * 
      * @return
+     * @throws Exception
      */
-    public List<Boolean> spliters(String v) {
+    public List<Boolean> spliters(String v) throws Exception {
         v.trim();
         basicOperation = BasicOperationSingelton.getIntence(getPremiscoutn(v));
         if (v.contains("~") && v.substring(v.indexOf("~") + 1, v.indexOf("~") + 2).equals("(") && v.length() > 0) {

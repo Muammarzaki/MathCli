@@ -78,6 +78,6 @@ public class ParseLogics {
     }
 
     public boolean checkStartWith(String str) {
-        return Operators.OPERATOR.stream().anyMatch(item -> str.startsWith(item));
+        return Operators.OPERATOR.stream().anyMatch(str::startsWith);
     }
 }

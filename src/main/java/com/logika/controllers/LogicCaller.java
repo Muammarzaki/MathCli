@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 
 import com.logika.constans.Operators;
 import com.logika.helpers.logichelper.ParseLogics;
@@ -98,9 +99,9 @@ public class LogicCaller implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        statement = statement.toLowerCase();
-        BasicOperationSingelton.getIntence(getPremiscoutn(statement));
         try {
+            statement = statement.toLowerCase();
+            BasicOperationSingelton.getIntence(getPremiscoutn(statement));
             if (statement != null) {
                 List<String> parse = ParseLogics.parseLogic(statement);
 
@@ -110,9 +111,10 @@ public class LogicCaller implements Callable<Integer> {
                     System.err.println(new Exception("something wrong"));
                 }
             }
+        } catch (NullPointerException e) {
+            System.out.println("something wrong");
         } catch (Exception e) {
-            System.err.println(e);
-            return 1;
+            System.err.println(e.getMessage());
         }
         return 0;
     }
@@ -132,12 +134,24 @@ public class LogicCaller implements Callable<Integer> {
 
     }
 
-    private String[] getPremiscoutn(String str) {
+    private String[] getPremiscoutn(String str) throws Exception {
         str = str.replace("(", "").replace(")", "").replace("~", "").trim();
         for (String iterable_element : Operators.OPERATOR) {
             str = str.replace(iterable_element, " ").trim();
         }
+        checkcorrectStatment(str.split(" "));
         Set<String> result = new HashSet<>(List.of(str.split(" ")));
         return Arrays.copyOf(result.toArray(), result.size(), String[].class);
+    }
+
+    private void checkcorrectStatment(String[] str) throws Exception {
+        Executors.newFixedThreadPool(Operators.NOT_OPERATOR.size());
+        for (String iterable_element : Operators.NOT_OPERATOR) {
+            for (String string : str) {
+                if (string.contains(iterable_element)) {
+                    throw new Exception("unCorrect Arguments");
+                }
+            }
+        }
     }
 }
