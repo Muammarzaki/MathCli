@@ -42,7 +42,7 @@ public class Spliterators {
                 } else if (statement.contains(Operators.OPERATOR.get(3))) {
                     return BasicOperation.bimpOps(premis1, premis2);
                 } else {
-                    System.err.println("something wrong");
+                    System.err.println("something wrong at split");
                 }
                 return Collections.emptyList();
             } else {

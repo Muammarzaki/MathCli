@@ -1,13 +1,32 @@
 package com.logika.services.logicops;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
+import java.time.Duration;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BasicOperationTest {
     BasicOperation bsc;
+
+    @Test
+    void testName() {
+        assertTimeoutPreemptively(Duration.ofMillis(50), () -> {
+            bsc.getTableChart().get("p");
+        });
+        List<Boolean> list = bsc.getTableChart().get("p");
+        assertArrayEquals(List.of(true, true, false, false).toArray(), list.toArray());
+        list = bsc.getTableChart().get("q");
+        assertArrayEquals(List.of(true, false, true, false).toArray(), list.toArray());
+    }
+
+    @BeforeEach
+    void setUp() {
+        bsc = new BasicOperation("p", "q");
+    }
 
     @Test
     void testAndOps() {

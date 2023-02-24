@@ -18,14 +18,14 @@ import com.logika.services.logicops.BasicOperation;
 import com.logika.services.logicops.BasicOperationSingelton;
 
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 
 @Command(name = "lgc", description = "compare string logic to boolean", mixinStandardHelpOptions = true)
 public class LogicCaller implements Callable<Integer> {
 
     Spliterators spliterators = new Spliterators();
 
-    @Option(names = { "-v", "--value" }, description = "value to compare string")
+    @Parameters(type = String.class)
     private String statement;
 
     /**

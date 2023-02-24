@@ -44,12 +44,11 @@ public class BasicOperation {
         for (int i = 0; i < charCount; i++) {
             table.add(Collections.emptyList());
             final int t = i;
-            List<Boolean> premis = exe.submit(() -> 
-                 generate(charCount, t)
-            ).get(5, TimeUnit.MILLISECONDS);
+            List<Boolean> premis = exe.submit(() -> generate(charCount, t)).get();
             table.set(i, premis);
             tableChart.put(chars[i], premis);
         }
+        exe.awaitTermination(50, TimeUnit.MILLISECONDS);
         exe.shutdown();
     }
 
