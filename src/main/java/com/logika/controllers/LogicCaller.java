@@ -2,7 +2,6 @@ package com.logika.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +17,7 @@ import com.logika.services.logicops.BasicOperation;
 import com.logika.services.logicops.BasicOperationSingelton;
 
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 @Command(name = "lgc", description = "compare string logic to boolean", mixinStandardHelpOptions = true)
@@ -27,6 +27,9 @@ public class LogicCaller implements Callable<Integer> {
 
     @Parameters(type = String.class)
     private String statement;
+    @Option(type = Boolean.class, names = { "-T", "--table" }, defaultValue = "false")
+    private Boolean verbose;
+    private BasicOperation intence;
 
     /**
      * @param parse jika parse lebih dari 2
@@ -43,7 +46,11 @@ public class LogicCaller implements Callable<Integer> {
                 for (int r = 0; r < parse.size(); r++) {
                     if ((r % 2) == 0) {
                         final int t = r;
-                        component.add(r / 2, spliterators.spliters(parse.get(t)));
+                        String subStatment = parse.get(t);
+                        List<Boolean> subLogicTable = spliterators.spliters(subStatment);
+                        if (intence.getTableChart().get(subStatment) == null && verbose)
+                            Print.printResult(subStatment, subLogicTable);
+                        component.add(r / 2, subLogicTable);
                     } else {
                         operator.add(parse.get(r));
                     }
@@ -51,7 +58,7 @@ public class LogicCaller implements Callable<Integer> {
                 // set data 1 and data 2 to compare
                 set1.addAll(component.get(0));
                 set2.addAll(component.get(1));
-                iterateToCompare(tempory, component, operator, set1, set2);
+                iterateToCompare(tempory, component, operator, set1, set2, parse);
                 return set1;
             } else {
                 return spliterators.spliters(parse.get(0));
@@ -65,7 +72,7 @@ public class LogicCaller implements Callable<Integer> {
     }
 
     private void iterateToCompare(List<Boolean> tempory, List<List<Boolean>> component, List<String> operator,
-            List<Boolean> set1, List<Boolean> set2) {
+            List<Boolean> set1, List<Boolean> set2, List<String> parse) {
         /*
          * compare data from boolean list
          */
@@ -84,6 +91,7 @@ public class LogicCaller implements Callable<Integer> {
             } else {
                 // nothing to do
             }
+
             set2.clear();
             try {
                 y++;// untuk
@@ -93,6 +101,9 @@ public class LogicCaller implements Callable<Integer> {
             }
             set1.clear();
             set1.addAll(tempory);
+            if (i < operator.size() - 1 && Boolean.TRUE.equals(verbose)) {
+                Print.printResult(parse.get(i) + parse.get(i + 1) + parse.get(i + 2), tempory);
+            }
             tempory.clear();
         }
     }
@@ -101,12 +112,15 @@ public class LogicCaller implements Callable<Integer> {
     public Integer call() {
         try {
             statement = statement.toLowerCase();
-            BasicOperationSingelton.getIntence(getPremiscoutn(statement));
+            intence = BasicOperationSingelton.getIntence(getPremisCount(statement));
+            if (Boolean.TRUE.equals(verbose))
+                intence.getTableChart().forEach(Print::printResult);
+
             if (statement != null) {
                 List<String> parse = ParseLogics.parseLogic(statement);
 
                 if ((parse.size() % 2) != 0) {
-                    this.printResult(statement, iterateStatment(parse));
+                    Print.printResult(statement, iterateStatment(parse));
                 } else {
                     System.err.println(new Exception("something wrong"));
                 }
@@ -119,32 +133,17 @@ public class LogicCaller implements Callable<Integer> {
         return 0;
     }
 
-    /**
-     * print hasil ke kosol
-     * 
-     * @param prefix
-     * @param result
-     */
-    public void printResult(String prefix, Collection<Boolean> result) {
-        String printed = String.format("| %s | %s |", prefix, result.toString().replace("[", "").replace("]", ""));
-        int lenght = printed.length();
-        Print.topBottom(lenght);
-        System.out.println(printed);
-        Print.topBottom(lenght);
-
-    }
-
-    private String[] getPremiscoutn(String str) throws Exception {
+    private String[] getPremisCount(String str) throws Exception {
         str = str.replace("(", "").replace(")", "").replace("~", "").trim();
         for (String iterable_element : Operators.OPERATOR) {
             str = str.replace(iterable_element, " ").trim();
         }
-        checkcorrectStatment(str.split(" "));
+        checkIsCorrectStatment(str.split(" "));
         Set<String> result = new HashSet<>(List.of(str.split(" ")));
         return Arrays.copyOf(result.toArray(), result.size(), String[].class);
     }
 
-    private void checkcorrectStatment(String[] str) throws Exception {
+    private void checkIsCorrectStatment(String[] str) throws Exception {
         Executors.newFixedThreadPool(Operators.NOT_OPERATOR.size());
         for (String iterable_element : Operators.NOT_OPERATOR) {
             for (String string : str) {

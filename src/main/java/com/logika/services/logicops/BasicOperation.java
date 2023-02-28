@@ -10,7 +10,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+
+import com.logika.helpers.print.Print;
 
 public class BasicOperation {
     private List<List<Boolean>> table = new ArrayList<>();
@@ -30,14 +31,12 @@ public class BasicOperation {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
         }
         return this;
     }
 
     private void generateLogicTable(Integer charCount, String... chars)
-            throws InterruptedException, ExecutionException, TimeoutException {
+            throws InterruptedException, ExecutionException {
 
         ExecutorService exe = Executors.newFixedThreadPool(charCount);
 

@@ -70,15 +70,16 @@ public class Spliterators {
      * @return
      * @throws Exception
      */
-    public List<Boolean> spliters(String v) throws Exception {
+    public List<Boolean> spliters(String v) {
+        List<Boolean> result;
         v.trim();
         basicOperation = BasicOperationSingelton.getIntence(getPremiscoutn(v));
         if (v.contains("~") && v.substring(v.indexOf("~") + 1, v.indexOf("~") + 2).equals("(") && v.length() > 0) {
-            return Negasi.negasi(this.findMethod(this.getbetween(v)));
+            result = Negasi.negasi(this.findMethod(this.getbetween(v)));
         } else {
-            return this.findMethod(this.getbetween(v));
+            result = this.findMethod(this.getbetween(v));
         }
-
+        return result;
     }
 
     /**
